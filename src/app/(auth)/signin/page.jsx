@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
@@ -24,7 +25,8 @@ const Signin = () => {
   const onSubmit = (data) => {
     const { email, password } = data;
     console.log("email: ", email);
-    console.log("password: ", password);
+
+    // Use NextAuth.js to connect.
   };
 
   return (
@@ -77,6 +79,15 @@ const Signin = () => {
           className="mt-[40px] ml-[20px] mr-[20px]"
         >
           Submit
+        </Button>
+
+        <Button
+          type="button"
+          variant="outlined"
+          color="secondary"
+          className="mt-[20px] ml-[20px] mr-[20px]"
+        >
+          <Link href="/">Back to home page</Link>
         </Button>
       </form>
     </main>
