@@ -1,4 +1,4 @@
-// import { signUp } from "../../../../prisma/utils/users.js";
+import { signUp } from "@/lib/prisma/utils/users.js";
 
 const handler = async (req, res) => {
   if (req.method === "POST") {
