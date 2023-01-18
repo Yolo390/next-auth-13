@@ -6,7 +6,7 @@ export const signUp = async (user) => {
   try {
     const name = user.name.trim();
     const email = user.email.trim();
-    const password = user.password.trim();
+    let password = user.password.trim();
     const confirmPassword = user.confirmPassword.trim();
 
     // Check if name is empty;
@@ -36,14 +36,13 @@ export const signUp = async (user) => {
     if (password !== confirmPassword)
       return { error: "Passwords should be identical !" };
 
-    // Do not send 'confirm_password' to DB.
-    delete user.confirmPassword;
-
     // Hash the password.
-    user.password = bcrypt.hashSync(user.password, 12);
+    password = bcrypt.hashSync(password, 12);
 
     // Create user in DB.
-    const newUser = await prisma.user.create({ data: user });
+    const newUser = await prisma.user.create({
+      data: { name, email, password },
+    });
 
     return { user: newUser };
   } catch (error) {
