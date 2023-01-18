@@ -11,9 +11,15 @@ const Home = () => {
         Authenticate project with Next.js 13
       </h1>
 
-      <Button variant="outlined" color="primary" className="mt-[60px]">
-        <Link href="/signin">Sign-in</Link>
-      </Button>
+      <div className="flex gap-4">
+        <Button variant="outlined" color="primary" className="mt-[60px]">
+          <Link href="/signin">Login</Link>
+        </Button>
+
+        <Button variant="outlined" color="primary" className="mt-[60px]">
+          <Link href="/signup">Register</Link>
+        </Button>
+      </div>
     </main>
   );
 };

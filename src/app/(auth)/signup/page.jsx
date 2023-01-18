@@ -9,8 +9,9 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
 const schema = object({
-  email: string().required().email(),
-  password: string().required().min(9).max(26),
+  name: string().required().min(3).max(16).trim(),
+  email: string().required().email().trim(),
+  password: string().required().min(9).max(26).trim(),
 }).required();
 
 const Signup = () => {
@@ -23,7 +24,7 @@ const Signup = () => {
   });
 
   const onSubmit = (data) => {
-    const { email, password } = data;
+    const { name, email, password } = data;
     console.log("email: ", email);
     console.log("password: ", password);
 
@@ -34,9 +35,26 @@ const Signup = () => {
 
   return (
     <main className="flex flex-col justify-center items-center h-[100%]">
-      <h1 className="font-bold text-[40px] text-gray-900 mb-[60px]">Sign-up</h1>
-
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-7">
+        <Controller
+          name="name"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <TextField
+              {...field}
+              id="name"
+              type="text"
+              variant="standard"
+              className="ml-[20px] mr-[20px]"
+              label="Name"
+              placeholder="Enter your name"
+              helperText={errors.name ? errors.name?.message : ""}
+              error={errors.name ? Boolean(true) : Boolean(false)}
+            />
+          )}
+        />
+
         <Controller
           name="email"
           control={control}

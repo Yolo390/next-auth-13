@@ -34,8 +34,6 @@ const Signin = () => {
 
   return (
     <main className="flex flex-col justify-center items-center h-[100%]">
-      <h1 className="font-bold text-[40px] text-gray-900 mb-[60px]">Sign-in</h1>
-
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-7">
         <Controller
           name="email"
