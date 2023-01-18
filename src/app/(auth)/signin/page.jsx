@@ -25,8 +25,11 @@ const Signin = () => {
   const onSubmit = (data) => {
     const { email, password } = data;
     console.log("email: ", email);
+    console.log("password: ", password);
 
+    // TODO:
     // Use NextAuth.js to connect.
+    // then redirect to Profile.
   };
 
   return (
