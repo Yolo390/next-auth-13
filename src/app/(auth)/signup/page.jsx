@@ -1,20 +1,32 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string } from "yup";
+import { object, ref, string } from "yup";
+import validator from "validator";
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+
+import AuthError from "@/components/error/AuthError.jsx";
 
 const schema = object({
   name: string().required().min(3).max(16).trim(),
   email: string().required().email().trim(),
   password: string().required().min(9).max(26).trim(),
+  confirmPassword: string()
+    .required()
+    .oneOf([ref("password"), null], "Passwords don't match !"),
 }).required();
 
 const Signup = () => {
+  const [error, setError] = useState({});
+
+  const router = useRouter();
+
   const {
     control,
     handleSubmit,
@@ -24,13 +36,32 @@ const Signup = () => {
   });
 
   const onSubmit = (data) => {
-    const { name, email, password } = data;
-    console.log("email: ", email);
-    console.log("password: ", password);
+    const { name, email, password, confirmPassword } = data;
 
-    // TODO:
-    // Use NextAuth.js to connect.
-    // then redirect to Profile.
+    // Use validator to avoid XSS attacks.
+    const safeData = {
+      name: validator.escape(name),
+      email: validator.escape(email),
+      password: validator.escape(password),
+      confirmPassword: validator.escape(confirmPassword),
+    };
+
+    // Create an user account.
+    fetch("/api/signUp", {
+      body: JSON.stringify(safeData),
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.error) {
+          setError({ message: res.error });
+          return null;
+        }
+
+        // Redirect to `/signin` if ok.
+        router.push("/signin");
+      });
   };
 
   return (
@@ -93,6 +124,29 @@ const Signup = () => {
             />
           )}
         />
+
+        <Controller
+          name="confirmPassword"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <TextField
+              {...field}
+              id="confirmPassword"
+              type="password"
+              variant="standard"
+              className="ml-[20px] mr-[20px]"
+              label="Confirm password"
+              placeholder="Enter again your password"
+              helperText={
+                errors.confirmPassword ? errors.confirmPassword?.message : ""
+              }
+              error={errors.confirmPassword ? Boolean(true) : Boolean(false)}
+            />
+          )}
+        />
+
+        {error?.message && <AuthError error={error} setError={setError} />}
 
         <Button
           type="submit"
