@@ -13,7 +13,7 @@ const schema = object({
   password: string().required().min(9).max(26),
 }).required();
 
-const Signin = () => {
+const Signup = () => {
   const {
     control,
     handleSubmit,
@@ -34,7 +34,7 @@ const Signin = () => {
 
   return (
     <main className="flex flex-col justify-center items-center h-[100%]">
-      <h1 className="font-bold text-[40px] text-gray-900 mb-[60px]">Sign-in</h1>
+      <h1 className="font-bold text-[40px] text-gray-900 mb-[60px]">Sign-up</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-7">
         <Controller
@@ -81,7 +81,7 @@ const Signin = () => {
           variant="outlined"
           className="mt-[40px] ml-[20px] mr-[20px]"
         >
-          Login
+          Register
         </Button>
 
         <Button
@@ -90,7 +90,7 @@ const Signin = () => {
           color="warning"
           className="mt-[40px] ml-[20px] mr-[20px]"
         >
-          <Link href="/signup">Go to sign-up</Link>
+          <Link href="/signin">Go to sign-in</Link>
         </Button>
 
         <Button
@@ -106,4 +106,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default Signup;
