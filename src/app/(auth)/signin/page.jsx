@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
+import { signIn } from "next-auth/react";
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -14,6 +16,9 @@ const schema = object({
 }).required();
 
 const Signin = () => {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
+
   const {
     control,
     handleSubmit,
@@ -22,14 +27,19 @@ const Signin = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const { email, password } = data;
-    console.log("email: ", email);
-    console.log("password: ", password);
 
-    // TODO:
-    // Use NextAuth.js to connect.
-    // then redirect to Profile.
+    try {
+      await signIn("credentials", {
+        redirect: Boolean(true),
+        callbackUrl,
+        email,
+        password,
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
   };
 
   return (
