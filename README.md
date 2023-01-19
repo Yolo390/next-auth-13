@@ -1,6 +1,8 @@
 # Authentification in Next.js 13
 
-I am using Next.js 13, NextAuth.js, Prisma, MongoDB and TailwindCSS.
+I am using React.js with Next.js 13, NextAuth.js, Prisma, MongoDB, TailwindCSS and React Hook Form.
+
+The purpose is to show how to easily handle authentication with credentials (email + password) in Next.js 13.
 
 ---
 
