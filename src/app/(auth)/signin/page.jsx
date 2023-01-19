@@ -33,7 +33,7 @@ const Signin = () => {
     try {
       await signIn("credentials", {
         redirect: Boolean(true),
-        callbackUrl,
+        callbackUrl: callbackUrl || "/",
         email,
         password,
       });
