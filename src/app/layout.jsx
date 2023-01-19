@@ -1,4 +1,4 @@
-import SessionProvider from "@/context/SessionContext/SessionProvider.jsx";
+import SessionProvider from "@/context/NextAuthContext/SessionProvider.jsx";
 
 import "@/styles/globals.css";
 
