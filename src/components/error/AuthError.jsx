@@ -20,18 +20,16 @@ const AuthError = ({ error, reset = null, setError = () => {} }) => {
   };
 
   return (
-    <>
-      <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        open={open}
-        autoHideDuration={5000}
-        onClose={handleClose}
-      >
-        <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          {error?.message}
-        </Alert>
-      </Snackbar>
-    </>
+    <Snackbar
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      open={open}
+      autoHideDuration={5000}
+      onClose={handleClose}
+    >
+      <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+        {error?.message}
+      </Alert>
+    </Snackbar>
   );
 };
 
