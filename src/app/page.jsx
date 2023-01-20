@@ -1,25 +1,34 @@
 "use client";
 
-import Link from "next/link";
+import { useSession } from "next-auth/react";
+import clsx from "clsx";
 
-import Button from "@mui/material/Button";
+import UserLoggedIn from "@/components/home/UserLoggedIn.jsx";
+import UserLoggedOut from "@/components/home/UserLoggedOut.jsx";
 
 const Home = () => {
+  const { data } = useSession();
+
   return (
     <main className="flex flex-col items-center justify-center h-[100%]">
-      <h1 className="font-bold text-[40px] text-gray-900 ml-[20px] mr-[20px]">
-        Authenticate project with Next.js 13
+      <h1 className="font-bold text-3xl md:text-4xl text-center text-gray-900">
+        Authentication project
       </h1>
 
-      <div className="flex gap-4">
-        <Button variant="outlined" color="primary" className="mt-[60px]">
-          <Link href="/signin">Login</Link>
-        </Button>
+      <h2
+        className={clsx(
+          "font-semibold text-2xl italic text-center",
+          "mt-5 md:mt-3"
+        )}
+      >
+        Next.js 13 and NextAuth.js
+      </h2>
 
-        <Button variant="outlined" color="primary" className="mt-[60px]">
-          <Link href="/signup">Register</Link>
-        </Button>
-      </div>
+      {data && data?.user ? (
+        <UserLoggedIn user={data?.user} />
+      ) : (
+        <UserLoggedOut />
+      )}
     </main>
   );
 };
