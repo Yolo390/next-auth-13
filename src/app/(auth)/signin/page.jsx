@@ -1,115 +1,17 @@
-"use client";
+import { redirect } from "next/navigation";
+import { unstable_getServerSession } from "next-auth/next";
 
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string } from "yup";
-import { signIn } from "next-auth/react";
+import SignInForm from "@/components/form/SignInForm.jsx";
 
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+const Signin = async () => {
+  const session = await unstable_getServerSession();
 
-const schema = object({
-  email: string().required().email(),
-  password: string().required().min(9).max(26),
-}).required();
-
-const Signin = () => {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-
-  const onSubmit = async (data) => {
-    const { email, password } = data;
-
-    try {
-      await signIn("credentials", {
-        redirect: Boolean(true),
-        callbackUrl: callbackUrl || "/",
-        email,
-        password,
-      });
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
+  // If already connected, can not access to `/signin`.
+  if (session?.user) redirect("/");
 
   return (
     <main className="flex flex-col justify-center items-center h-[100%]">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-7">
-        <Controller
-          name="email"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <TextField
-              {...field}
-              id="email"
-              type="email"
-              variant="standard"
-              className="ml-[20px] mr-[20px]"
-              label="Email"
-              placeholder="Enter your email"
-              helperText={errors.email ? errors.email?.message : ""}
-              autoComplete="off"
-              error={errors.email ? Boolean(true) : Boolean(false)}
-            />
-          )}
-        />
-
-        <Controller
-          name="password"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <TextField
-              {...field}
-              id="password"
-              type="password"
-              variant="standard"
-              className="ml-[20px] mr-[20px]"
-              label="Password"
-              placeholder="Enter your password"
-              helperText={errors.password ? errors.password?.message : ""}
-              error={errors.password ? Boolean(true) : Boolean(false)}
-            />
-          )}
-        />
-
-        <Button
-          type="submit"
-          variant="outlined"
-          className="mt-[40px] ml-[20px] mr-[20px]"
-        >
-          Login
-        </Button>
-
-        <Button
-          type="button"
-          variant="outlined"
-          color="warning"
-          className="mt-[40px] ml-[20px] mr-[20px]"
-        >
-          <Link href="/signup">Go to sign-up</Link>
-        </Button>
-
-        <Button
-          type="button"
-          variant="outlined"
-          color="secondary"
-          className="ml-[20px] mr-[20px]"
-        >
-          <Link href="/">Back to home page</Link>
-        </Button>
-      </form>
+      <SignInForm />
     </main>
   );
 };

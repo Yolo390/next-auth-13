@@ -1,13 +1,11 @@
-"use client";
-
-import { useSession } from "next-auth/react";
+import { unstable_getServerSession } from "next-auth/next";
 import clsx from "clsx";
 
 import UserLoggedIn from "@/components/home/UserLoggedIn.jsx";
 import UserLoggedOut from "@/components/home/UserLoggedOut.jsx";
 
-const Home = () => {
-  const { data } = useSession();
+const Home = async () => {
+  const session = await unstable_getServerSession();
 
   return (
     <main className="flex flex-col items-center justify-center h-[100%]">
@@ -24,8 +22,8 @@ const Home = () => {
         Next.js 13 and NextAuth.js
       </h2>
 
-      {data && data?.user ? (
-        <UserLoggedIn user={data?.user} />
+      {session && session?.user ? (
+        <UserLoggedIn user={session?.user} />
       ) : (
         <UserLoggedOut />
       )}
