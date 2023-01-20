@@ -9,7 +9,7 @@ export const signIn = async (user) => {
 
     // Check if email and password are not empty.
     if (email === "" || password === "")
-      return { error: "Fieds can not be empty !" };
+      return { error: "Fields can not be empty !" };
 
     // Check if email is valid.
     const regEx =
