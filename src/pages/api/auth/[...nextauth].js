@@ -7,6 +7,7 @@ import { signIn } from "@/lib/prisma/utils/users.js";
 
 const authHandler = async (req, res) => {
   return await NextAuth(req, res, {
+    adapter: PrismaAdapter(prisma),
     providers: [
       CredentialsProvider({
         async authorize(credentials, req) {
@@ -14,7 +15,7 @@ const authHandler = async (req, res) => {
             try {
               const { user, error } = await signIn(credentials);
 
-              if (error) throw new Error(error);
+              if (error) return null;
 
               return user;
             } catch (error) {
@@ -27,7 +28,6 @@ const authHandler = async (req, res) => {
         },
       }),
     ],
-    adapter: PrismaAdapter(prisma),
     pages: {
       signIn: "/signin",
     },
